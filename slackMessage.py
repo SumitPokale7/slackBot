@@ -18,7 +18,8 @@ if __name__ == '__main__':
     emojiSpeaker = ":loudspeaker:"
     smily = ":blush:"
     # url = "https://hooks.slack.com/services/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"
-    url = "https://hooks.slack.com/services/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"
+    # url = "https://hooks.slack.com/services/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"
+    url = "https://hooks.slack.com/services/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"
 
     
     message = get_random_quote()
@@ -43,7 +44,7 @@ if __name__ == '__main__':
     }
     
     byte_length = str(len(json.dumps(slack_data)))
-    # print(slack_data)
+    print(slack_data)
     headers = {'Content-Type': "application/json", 'Content-Length': byte_length}
     response = requests.post(url, data=json.dumps(slack_data), headers=headers)
     
