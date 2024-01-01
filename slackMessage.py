@@ -17,8 +17,9 @@ if __name__ == '__main__':
     
     emojiSpeaker = ":loudspeaker:"
     smily = ":blush:"
-    url = "https://hooks.slack.com/services/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"
     # url = "https://hooks.slack.com/services/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"
+    url = "https://hooks.slack.com/services/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"
+
     
     message = get_random_quote()
     title = (f"Update your daily status {emojiSpeaker}" )
