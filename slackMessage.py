@@ -2,11 +2,12 @@ import json
 import requests
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
+import os
 
-# # Replace these with your own values
-slack_token = "xoxb-6000398059280-6401040416006-Bj3QltJsYs4qwKy6CH1dHBX6"
+url = os.environ.get('WEBHOOK_URL')
+slack_token = "xoxb-6000398059280-6401040416006-9RWzbgkJ3TjlFqnydqCrqPxU"
 
-
+print(url)
 
 def get_random_quote():
     url = "https://api.quotable.io/random"
@@ -22,19 +23,20 @@ def get_random_quote():
 if __name__ == '__main__':
     
     
-    emojiSpeaker = ":loudspeaker:"
-    smily = ":blush:"
-    url = "https://hooks.slack.com/services/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"
+    speakerEmoji = ":loudspeaker:"
+    smilyEmoji = ":blush:"
     
-    client = WebClient(token=slack_token)
+    # url = "https://hooks.slack.com/services/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"
+    
+    # client = WebClient(token=slack_token)
     channel_id = "#test_1"
 
-    message = get_random_quote()
-    title = (f"Update your daily status {emojiSpeaker}" )
+    # message = get_random_quote()
+    title = (f"Update your daily status {speakerEmoji} \n {get_random_quote()}" )
     
     slack_data = {
         # "username": "Remainder",
-        "icon_emoji": emojiSpeaker,
+        "icon_emoji": speakerEmoji,
         "channel": channel_id,
         "attachments": [
             {
@@ -42,7 +44,7 @@ if __name__ == '__main__':
                 "fields": [
                     {
                         "title": title,
-                        "value": (f"{message}, {smily} <!here>"),
+                        "value": (f"{smilyEmoji} <!here>"),
                         "short": "false",
                     }
                 ]
@@ -50,11 +52,30 @@ if __name__ == '__main__':
         ]
     }
     
-    byte_length = str(len(json.dumps(slack_data)))
+    # for the post message()
+    # slack_data = {
+    #     "icon_emoji": speakerEmoji,
+    #     "channel": channel_id,
+    #     "blocks": [
+    #         {
+    #             "type": "section",
+    #             "block_id": "section1",
+    #             "text": {
+    #                 "type": "mrkdwn",
+    #                 "text": f"*{title}*\n{get_random_quote()}, {smilyEmoji} <!here>"
+    #             },
+    #         }
+    #     ]
+    # }
+    
     # print(slack_data)
+    
+    byte_length = str(len(json.dumps(slack_data)))
     headers = {'Content-Type': "application/json", 'Content-Length': byte_length}
-    # response = requests.post(client.chat_postMessage(slack_token, channel_id, slack_data), data=json.dumps(slack_data), headers=headers)
-    response = client.chat_postMessage(channel=channel_id, text=title)
+    
+    response = requests.post(url, data=json.dumps(slack_data), headers=headers)
+    # response = client.chat_postMessage(channel=channel_id, text=json.dumps(slack_data), headers=headers)
+    
     if response.status_code != 200:
         print(response.text)
         raise Exception(response.status_code, response.text)
