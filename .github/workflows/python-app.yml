@@ -37,6 +37,7 @@ jobs:
     - name: Run Python
       run: |
         env
+        export WEBHOOK_URL=https://hooks.slack.com/services/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
         echo "WEBHOOK_URL=${{ secrets.WEBHOOK_URL }}"
         python -c "import os; print(os.environ)"
         python slackMessage.py
